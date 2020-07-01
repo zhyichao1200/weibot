@@ -26,7 +26,7 @@ class Post
      * @param $html
      * @return SendResModel
      */
-    protected function result($html){
+    protected function result($html) :SendResModel{
         $body = json_decode($html,true);
         $res = is_array($body) && $body["code"] == "100000" ? true : false;
         return new SendResModel($res ? true : false,$res ? "发送成功" : (!empty($body["msg"]) ? $body["msg"] : "未知错误"));
