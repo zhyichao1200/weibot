@@ -159,4 +159,27 @@ class Post
         return $this->result($rt->getBody()->getContents());
     }
 
+    /**
+     * 可见操作
+     * @param string $mid
+     * @param $visible 2-好友圈可见  10-粉丝可见 0-公开
+     * @return SendResModel
+     */
+    public function see(string $mid,int $visible) :SendResModel{
+        $rt = Http::getClient()->post('https://weibo.com/p/aj/v6/mblog/modifyvisible?ajwvr=6&domain=100505&__rnd='.$this->micotime(), [
+            'form_params' => [
+                "visible"=>$visible,
+                "mid"=>$mid,
+                "_t"=>"0",
+            ]
+        ]);
+        return $this->result($rt->getBody()->getContents());
+    }
+
+
+
+
+
+
+
 }
