@@ -1,0 +1,16 @@
+{
+    "name": "momo/weibot",
+    "license": "MIT",
+    "require": {
+        "guzzlehttp/guzzle": "^6.4",
+        "phpseclib/phpseclib": "^2.0",
+        "pimple/pimple": "^3.3",
+        "doctrine/cache": "^1.6",
+      "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Momo\\Weibot\\": "src/"
+        }
+    }
+}
