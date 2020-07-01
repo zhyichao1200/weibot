@@ -6,5 +6,6 @@ namespace Momo\Weibot\Models;
 
 class AuthModel extends Model
 {
-    public $username;
+    public $uniqueId;
+    public $mid;
 }

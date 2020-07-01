@@ -207,12 +207,31 @@ class Auth
     /**
      * sso登录
      * @param array $urls
+     * @return string
      */
-    protected function ssoLogin(array $urls){
+    protected function ssoLogin(array $urls) :string {
+        $uid = "";
         foreach ($urls as $value){
-            try{Http::getClient()->get($value);}catch (\Exception $e){}
+            try{
+                $res = Http::getClient()->get($value);
+                $body = $res->getBody()->getContents();
+                if(strpos($body,"uniqueid")){
+                    preg_match('/"uniqueid":"(\d+)"/is',$body,$uniqueid);
+                    !empty($uniqueid[1]) and $uid = $uniqueid[1];
+                }
+
+            }catch (\Exception $e){}
         }
+        return $uid;
     }
+
+    protected function home($uniqueId) :string {
+        $res = Http::getClient()->get("https://weibo.com/u/".$uniqueId."/home");
+        $body = $res->getBody()->getContents();
+        preg_match('/mid=(\d+)/is',$body,$mid);
+        return $mid[1];
+    }
+
 
     /**
      * 登录
@@ -229,9 +248,11 @@ class Auth
         if (!$loginData->ok()) return $loginData;
         $ssoURI = $this->loginURIs($loginData->ajaxlogin);
         if (!$ssoURI->ok()) return $ssoURI;
-        $this->ssoLogin($ssoURI->arrURL);
+        $uniqueId = $this->ssoLogin($ssoURI->arrURL);
+        $mid = $this->home($uniqueId);
         $model = new AuthModel(true,"登录成功");
-        $model->username = $this->username;
+        $model->uniqueId = $uniqueId;
+        $model->mid = $mid;
         return $model;
     }
 }
