@@ -138,4 +138,25 @@ class Post
         return $this->result($rt->getBody()->getContents());
     }
 
+    /**
+     * 点赞/取消赞
+     * @param string $mid 微博id
+     * @return SendResModel
+     */
+    public function heart(string $mid) :SendResModel{
+        $rt = Http::getClient()->post('https://weibo.com/aj/v6/like/add?ajwvr=6&__rnd='.$this->micotime(), [
+            'form_params' => [
+                "location"=>"page_100505_home",
+                "version"=>"mini",
+                "qid"=>"heart",
+                'mid' => $mid,
+                "loc"=>"profile",
+                "cuslike"=>"1",
+                "floating"=>"0",
+                "_t"=>"0",
+            ]
+        ]);
+        return $this->result($rt->getBody()->getContents());
+    }
+
 }
